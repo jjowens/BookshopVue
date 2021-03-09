@@ -1,0 +1,28 @@
+{
+  "name": "bookshopvue",
+  "version": "1.0.0",
+  "description": "Mock Bookshop website. Demostrates Vue.js and Tailwind CSS skills.",
+  "private": true,
+  "dependencies": {
+    "tailwindcss": "^2.0.3",
+    "vue": "^2.6.12",
+    "xlsx": "^0.16.9"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "exportjson": "node.exe .\\assets\\ExcelToJSON.js",
+    "dev": "npx tailwindcss-cli@latest build ./assets/src/tailwind.css -c ./assets/config/tailwind.dev.config.js -o ./public/css/ts/ts.css",
+    "prod": "npx tailwindcss-cli@latest build ./assets/src/tailwind.css -c ./assets/config/tailwind.prod.config.js -o ./public/css/ts/ts.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjowens/BookshopVue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jjowens/BookshopVue/issues"
+  },
+  "homepage": "https://github.com/jjowens/BookshopVue#readme"
+}

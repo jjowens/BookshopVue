@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+
+.editor-button {
+	@apply bg-blue-400 text-white p-2 rounded m-1 cursor-pointer
+}
+
+.editor-widget {
+	@apply bg-blue-100 m-2 p-2 rounded
+}
+
+.editor-widget h2 {
+	@apply bg-blue-300 p-1 rounded mb-2
+}
+
+.delete-button {
+	@apply rounded text-white bg-red-600 float-right p-2 cursor-pointer
+}
+
+.status-warning {
+	@apply rounded text-white bg-red-600 p-2
+}
+
+@tailwind utilities;

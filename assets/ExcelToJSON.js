@@ -6,9 +6,9 @@ const jsonFileName = "./public/data/data.json";
 const file = reader.readFile("./assets/datasource/books.xlsx");
 
 let data = {
-    Authors: [],
-	Genres: [],
-    Books:[],
+    authors: [],
+	genres: [],
+    books:[],
 }
 
 function createAuthor(fullname) {
@@ -67,13 +67,18 @@ temp.forEach((res) => {
 	}
 
 	let bookData = {
-		Title: "",
-		Genres: [],
-		Authors: []
+		title: "",
+        price: 0.99,
+		genres: [],
+		authors: []
 	};
 
 	if (res.Title !== undefined) {
-		bookData.Title = res.Title.trim();
+		bookData.title = res.Title.trim();
+	}
+
+    if (res.Price !== undefined) {
+		bookData.price = res.Price;
 	}
 	
     // AUTHORS
@@ -95,7 +100,7 @@ temp.forEach((res) => {
         }
 
         // ADD AUTHOR TO BOOK
-        bookData.Authors.push(authorObj);
+        bookData.authors.push(authorObj);
 	});
 
     // GENRES
@@ -116,11 +121,11 @@ temp.forEach((res) => {
         }
 
         // ADD AUTHOR TO BOOK
-        bookData.Genres.push(genreObj);
+        bookData.genres.push(genreObj);
 	});
 
 	// ADD NEW BOOK
-	data.Books.push(bookData);
+	data.books.push(bookData);
 })
 
 
@@ -146,9 +151,9 @@ listOfGenres.sort(function(a,b) {
     return 0; 
 });
 
-
-data.Genres = listOfGenres;
-data.Authors = listOfAuthors;
+// UPDATE PROPERTIES
+data.genres = listOfGenres;
+data.authors = listOfAuthors;
 
 let jsonStr = JSON.stringify(data);
 

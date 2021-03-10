@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Shop with Vue and Tailwind CSS</title>
+    <link rel="stylesheet" type="text/css" href="public/css/ts/ts.css" media="screen"/> 
+    <script src="public/scripts/vue/vue.min.js"></script>
+
+</head>
+<body>
+    <div id="app" class="ml-3 mr-3 mt-2">
+        <div class="rounded p-2 bg-green-200 border-2 border-green-300">
+            <div class="float-left">
+                <h2>Bookshop Vue</h2>
+            </div>
+            <div class="float-right">
+                <p>Items: {{ shoppingCart.length }}. Total: {{ currency }}{{ shoppingCartTotalPrice }} <img src="public/images/shopping-basket.gif" class="float-right ml-12"/></p>
+            </div>
+            <div class="clear-both"></div>
+        </div>
+        <div class="clear-both"></div>
+
+        <div class="hidden">
+            <div class="p-2">
+                <p>Search Bar <input type="text" class="border-1 border-gray-300 rounded" /></p>
+            </div>
+            
+            <div>
+                <p>List Options: <span>Large</span> or <span>Small</spa></p>
+            </div>
+        </div>
+        <div class="flex mt-2">
+            <!-- FILTERS-->
+            <div>
+                <div class="bg-gray-300 rounded-t-lg text-center p-2">
+                    <h3>Genres</h3>
+                </div>
+                <div class="bg-gray-100 rounded-b-lg p-2 border-2 border-gray-300">
+                    <div v-for="genreObj in genres">
+                        <p>
+                            <input type="checkbox" class="mr-2" v-model="filteredGenres" v-bind:value="genreObj"/>
+                            <label v-bind:for="genreObj">{{ genreObj }}</label>
+                        </p>
+                    </div>
+    
+                </div>
+            </div>
+
+            <!-- books -->
+            <div class="flex-1 flex-wrap ml-3 bg-gray-100 rounded p-3 ">
+                <div v-for="bookObj in books" class="float-left m-2 w-48 h-59">
+                    <p class="overflow-hidden truncate font-semibold" v-bind:title="bookObj.title">{{ bookObj.title }}</p>
+                    <p><span v-for="authorObj in bookObj.authors">{{ authorObj.fullname }}</span></p>
+                    <p>{{ currency }}{{ bookObj.price }}</p>
+                    <div class="content-center mb-1 text-center">
+                        <img src="public/images/generic-book.jpg" alt="book-cover"/>
+                    </div>
+                    <div class="content-center">
+                        <button class="rounded bg-green-200 border-2 border-green-300 p-1" v-on:click="addToShoppingCart(bookObj)" v-if="!bookObj.inCartFlag">Add To Cart</button>
+                        <button class="rounded bg-yellow-200 border-2 border-yellow-300 p-1" v-on:click="removeFromShoppingCart(bookObj)" v-if="bookObj.inCartFlag">Remove From Cart</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div id="ShoppingCartBasket" class="p-2 rounded w-4/6 bg-gray-100 content-center border-2 border-gray-300 m-3" v-if="shoppingCart.length > 0">
+            <div v-for="item in shoppingCart" class="grid grid-cols-6 gap-3 mb-3">
+                <div><p>{{ item.title }}</p></div>
+                <div><p>Price: {{ currency }}{{ item.price }}</p></div>
+                <div><p>Quantity: {{ item.quantity }}</p></div>
+                <div> 
+                    <input type="text" v-model:value="item.quantity" @change="updateQuantityPrice(item)"/>
+                </div>
+                <div><p>Total {{ currency }}{{ item.quantityTotalPrice }}</p></div>
+                <div><button class="rounded bg-yellow-200 border-2 border-yellow-300 p-1" v-on:click="removeFromShoppingCart(item)">Remove From Cart</button></div>
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+                <div></div>
+                <div>Sub-Total</div>
+                <div>{{ currency }}{{ shoppingCartTotalPrice }}</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="public/scripts/bookshop.js"></script>
+</html>

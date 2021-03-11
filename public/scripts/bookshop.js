@@ -11,7 +11,9 @@ const app = new Vue({
         filteredGenres: [],
         currency: "£",
         shoppingCart: [],
-        shoppingCartTotalPrice: 0
+        shoppingCartTotalPrice: 0,
+        showShoppingCart: false,
+        shoppingCartTotalQuantity: 0
     },
     methods: {
         preload:function(event) {
@@ -29,13 +31,18 @@ const app = new Vue({
             console.log(this.authors);
         },
         updateShoppingCartTotalPrice: function() {
+            let totalQuantity = 0;
             let totalPrice = 0;
 
             this.shoppingCart.forEach(item => {
                 totalPrice += item.quantityTotalPrice;
+                totalQuantity += item.quantity;
             });
 
+            totalPrice = Math.round(totalPrice * 100) / 100
+
             this.shoppingCartTotalPrice = totalPrice;
+            this.shoppingCartTotalQuantity = totalQuantity;
         },
         addToShoppingCart(bookObj) {
             bookObj.inCartFlag = true;
@@ -63,10 +70,25 @@ const app = new Vue({
             this.updateShoppingCartTotalPrice();
         },
         updateQuantityPrice(bookObj) {
-            console.log(bookObj.quantity + " * " + bookObj.price);
-            bookObj.quantityTotalPrice = bookObj.quantity * bookObj.price;
+            let tempPrice = 0;
+
+            tempPrice = bookObj.quantity * bookObj.price;
+            tempPrice = Math.round(tempPrice * 100) / 100;
+
+            bookObj.quantityTotalPrice = tempPrice;
 
             this.updateShoppingCartTotalPrice();
+        },
+        toggleShoppingVisibilty: function() {
+            let flag = this.showShoppingCart;
+
+            if (flag === true) {
+                flag = false;
+            } else {
+                flag = true;
+            }
+
+            this.showShoppingCart = flag;
         }
     }
 });

@@ -16,7 +16,9 @@
                 <h2>Bookshop Vue</h2>
             </div>
             <div class="float-right">
-                <p>Items: {{ shoppingCart.length }}. Total: {{ currency }}{{ shoppingCartTotalPrice }} <img src="public/images/shopping-basket.gif" class="float-right ml-12"/></p>
+                <p>Items: {{ shoppingCart.length }}. Total: {{ currency }}{{ shoppingCartTotalPrice }} 
+                    
+                    <span v-on:click="toggleShoppingVisibilty"><img src="public/images/shopping-basket.gif" class="float-right ml-12 cursor-pointer"/></span></p>
             </div>
             <div class="clear-both"></div>
         </div>
@@ -49,7 +51,7 @@
             </div>
 
             <!-- books -->
-            <div class="flex-1 flex-wrap ml-3 bg-gray-100 rounded p-3 ">
+            <div class="flex-1 flex-wrap ml-3 bg-gray-100 rounded p-3" v-if="showShoppingCart === false">
                 <div v-for="bookObj in books" class="float-left m-2 w-48 h-59">
                     <p class="overflow-hidden truncate font-semibold" v-bind:title="bookObj.title">{{ bookObj.title }}</p>
                     <p><span v-for="authorObj in bookObj.authors">{{ authorObj.fullname }}</span></p>
@@ -64,25 +66,31 @@
                     
                 </div>
             </div>
+
+            <!-- SHOPPING CART -->
+            <div id="ShoppingCartBasket" class="p-2 rounded w-2/4 bg-gray-100 content-center border-2 border-gray-300 m-3" v-if="showShoppingCart === true">
+                <div v-for="item in shoppingCart" class="grid grid-cols-6 gap-1 mb-3">
+                    <div><p>{{ item.title }}</p></div>
+                    <div><p>Price: {{ currency }}{{ item.price }}</p></div>
+                    <div><p>Quantity:</p></div>
+                    <div> 
+                        <input type="number" v-model:value="item.quantity" @change="updateQuantityPrice(item)" class="w-20"/>
+                    </div>
+                    <div><p class="text-right">Total {{ currency }}{{ item.quantityTotalPrice }}</p></div>
+                    <div><button class="rounded bg-yellow-200 border-2 border-yellow-300 p-1" v-on:click="removeFromShoppingCart(item)">Remove From Cart</button></div>
+                </div>
+                <div class="grid grid-cols-6 gap-1">
+                    <div></div>
+                    <div></div>
+                    <div><p>Total Quantity:</p></div>
+                    <div>{{ shoppingCartTotalQuantity }}</div>
+                    <div class="text-right">Sub-Total: {{ currency }}{{ shoppingCartTotalPrice }}</div>
+                    <div></div>
+                </div>
+            </div>
         </div>
 
-        <div id="ShoppingCartBasket" class="p-2 rounded w-4/6 bg-gray-100 content-center border-2 border-gray-300 m-3" v-if="shoppingCart.length > 0">
-            <div v-for="item in shoppingCart" class="grid grid-cols-6 gap-3 mb-3">
-                <div><p>{{ item.title }}</p></div>
-                <div><p>Price: {{ currency }}{{ item.price }}</p></div>
-                <div><p>Quantity: {{ item.quantity }}</p></div>
-                <div> 
-                    <input type="text" v-model:value="item.quantity" @change="updateQuantityPrice(item)"/>
-                </div>
-                <div><p>Total {{ currency }}{{ item.quantityTotalPrice }}</p></div>
-                <div><button class="rounded bg-yellow-200 border-2 border-yellow-300 p-1" v-on:click="removeFromShoppingCart(item)">Remove From Cart</button></div>
-            </div>
-            <div class="grid grid-cols-3 gap-3">
-                <div></div>
-                <div>Sub-Total</div>
-                <div>{{ currency }}{{ shoppingCartTotalPrice }}</div>
-            </div>
-        </div>
+        
     </div>
 </body>
 <script src="public/scripts/bookshop.js"></script>

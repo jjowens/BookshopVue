@@ -7,13 +7,13 @@ const app = new Vue({
         books: [],
         authors: [],
         genres: [],
-        filteredAuthors: [],
         filteredGenres: [],
         currency: "£",
         shoppingCart: [],
         shoppingCartTotalPrice: 0,
         showShoppingCart: false,
-        shoppingCartTotalQuantity: 0
+        shoppingCartTotalQuantity: 0,
+        filteredGenresText: "All"
     },
     methods: {
         preload:function(event) {
@@ -25,10 +25,6 @@ const app = new Vue({
             this.authors = data.authors;
             this.genres = data.genres;
             this.books = data.books;
-
-            console.log("All loaded now");
-
-            console.log(this.authors);
         },
         updateShoppingCartTotalPrice: function() {
             let totalQuantity = 0;
@@ -36,7 +32,7 @@ const app = new Vue({
 
             this.shoppingCart.forEach(item => {
                 totalPrice += item.quantityTotalPrice;
-                totalQuantity += item.quantity;
+                totalQuantity = totalQuantity + parseInt(item.quantity);
             });
 
             totalPrice = Math.round(totalPrice * 100) / 100
@@ -50,6 +46,9 @@ const app = new Vue({
             bookObj.quantityTotalPrice = bookObj.quantity * bookObj.price;
 
             this.shoppingCart.push(bookObj);
+
+            console.log({ bookObj});
+
             this.updateShoppingCartTotalPrice();
         },
         removeFromShoppingCart(bookObj) {
@@ -89,6 +88,42 @@ const app = new Vue({
             }
 
             this.showShoppingCart = flag;
+        },
+        updateFilteredGenres: function() {
+            // genres text
+            let filteredText = "All";
+
+            if (this.filteredGenres.length > 0) {
+                filteredText = "";
+
+                this.filteredGenres.forEach(genre => {
+                    filteredText += genre + ", ";
+                });
+            } 
+
+            this.filteredGenresText = filteredText;
+
+            // LOOP THROUGH EACH BOOK
+            for (let bookIndex = 0; bookIndex < this.books.length; bookIndex++) {
+                const bookObj = this.books[bookIndex];
+                
+                for (let bookGenreIdx = 0; bookGenreIdx < bookObj.genres.length; bookGenreIdx++) {
+                    const genreObj = bookObj.genres[bookGenreIdx];
+                    
+                    for (let filteredGenreIdx = 0; filteredGenreIdx < this.filteredGenres.length; filteredGenreIdx++) {
+                        const filteredGenre = this.filteredGenres[filteredGenreIdx];
+                        
+                        if (filteredGenre === genreObj) {
+                            bookObj.visibility = true;
+                            break;
+                        } else {
+                            bookObj.visibility = false;
+                        }
+                    }
+                }
+
+            }
+
         }
     }
 });

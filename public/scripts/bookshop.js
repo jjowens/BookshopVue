@@ -13,7 +13,8 @@ const app = new Vue({
         shoppingCartTotalPrice: 0,
         showShoppingCart: false,
         shoppingCartTotalQuantity: 0,
-        filteredGenresText: "All"
+        filteredGenresText: "All",
+        purchased: false
     },
     methods: {
         preload:function(event) {
@@ -39,6 +40,14 @@ const app = new Vue({
 
             this.shoppingCartTotalPrice = totalPrice;
             this.shoppingCartTotalQuantity = totalQuantity;
+        },
+        emptyShoppingCart: function(){
+            this.shoppingCart.forEach((item) => {
+                item.inCartFlag = false;
+            });
+
+            this.shoppingCart = [];
+            this.updateShoppingCartTotalPrice();
         },
         addToShoppingCart(bookObj) {
             bookObj.inCartFlag = true;
@@ -89,41 +98,87 @@ const app = new Vue({
 
             this.showShoppingCart = flag;
         },
+        clearFilteredGenres: function() {
+            this.filteredGenresText = "All";
+            this.filteredGenres = [];
+
+            this.toggleBooksVisibility(true);
+        },
+        toggleBooksVisibility: function(boolFlag) {
+            for (let bookIndex = 0; bookIndex < this.books.length; bookIndex++) {
+                const bookObj = this.books[bookIndex];
+                
+                bookObj.visibility = boolFlag;
+            }
+        },
+        toggleSelectedBooksVisibility: function(selectedBooks, boolFlag) {
+            console.log({selectedBooks});
+            
+            for (let bookIndex = 0; bookIndex < selectedBooks.length; bookIndex++) {
+                const bookObj = selectedBooks[bookIndex];
+                
+                bookObj.visibility = boolFlag;
+            }
+        },
         updateFilteredGenres: function() {
-            // genres text
+            // GENRES FILTER TEXT
             let filteredText = "All";
 
             if (this.filteredGenres.length > 0) {
                 filteredText = "";
 
+                this.filteredGenres.sort(function(a,b) {
+                    if (a < b) {
+                        return -1;
+                    }
+                    if (a > b) {
+                    return 1;
+                    }
+                    return 0; 
+                });
+
                 this.filteredGenres.forEach(genre => {
                     filteredText += genre + ", ";
                 });
-            } 
 
+                // CROP OUT LAST COMMA
+                filteredText = filteredText.substring(0, filteredText.length - 2);
+            }
+
+            
             this.filteredGenresText = filteredText;
 
-            // LOOP THROUGH EACH BOOK
-            for (let bookIndex = 0; bookIndex < this.books.length; bookIndex++) {
-                const bookObj = this.books[bookIndex];
+            this.toggleBooksVisibility(false);
+
+            // LOOP THROUGH EACH FILTER
+            for (let filterGenreIndex = 0; filterGenreIndex < this.filteredGenres.length; filterGenreIndex++) {
+                const filterGenre = this.filteredGenres[filterGenreIndex];
                 
-                for (let bookGenreIdx = 0; bookGenreIdx < bookObj.genres.length; bookGenreIdx++) {
-                    const genreObj = bookObj.genres[bookGenreIdx];
-                    
-                    for (let filteredGenreIdx = 0; filteredGenreIdx < this.filteredGenres.length; filteredGenreIdx++) {
-                        const filteredGenre = this.filteredGenres[filteredGenreIdx];
-                        
-                        if (filteredGenre === genreObj) {
-                            bookObj.visibility = true;
-                            break;
-                        } else {
-                            bookObj.visibility = false;
-                        }
-                    }
-                }
+                let books = this.books.filter((item) => {
+                    return item.genres.includes(filterGenre);
+                });
+
+                this.toggleSelectedBooksVisibility(books, true);
 
             }
 
+            // clear all if not filters selected
+            if (this.filteredGenres.length === 0) {
+                this.toggleBooksVisibility(true);
+            }
+
+        },
+        completePurchase: function() {
+            this.purchased = true;
+            this.clearFilteredGenres();
+            this.emptyShoppingCart();
+            this.toggleBooksVisibility(true);
+        },
+        closeShoppingCart: function() {
+            if (this.purchased === true) {
+                this.purchased = false;
+            }
+            this.showShoppingCart = false;
         }
     }
 });

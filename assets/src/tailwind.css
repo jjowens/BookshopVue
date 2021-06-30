@@ -1,24 +1,58 @@
 @tailwind base;
 @tailwind components;
-
-.editor-button {
-	@apply bg-blue-400 text-white p-2 rounded m-1 cursor-pointer
-}
-
-.editor-widget {
-	@apply bg-blue-100 m-2 p-2 rounded
-}
-
-.editor-widget h2 {
-	@apply bg-blue-300 p-1 rounded mb-2
-}
-
-.delete-button {
-	@apply rounded text-white bg-red-600 float-right p-2 cursor-pointer
-}
-
-.status-warning {
-	@apply rounded text-white bg-red-600 p-2
-}
-
 @tailwind utilities;
+
+.bookshop-widget {
+   @apply rounded bg-gray-200 p-2 m-2 text-3xl text-center items-center
+}
+
+.bookshop-widget img {
+   @apply rounded inline-block align-middle
+}
+
+
+.book-widget {
+   @apply bg-gray-50 border-gray-200 border-2 m-2 w-64 rounded
+}
+
+.book-widget h3 {
+   white-space: nowrap;
+   overflow: hidden;
+   text-overflow: ellipsis;
+}
+
+ .book-widget div:first-of-type {
+    @apply bg-gray-100 p-3
+ }
+
+ .book-widget div:last-of-type {
+    @apply p-3
+ }
+
+ .blue-button {
+    @apply rounded bg-blue-200 p-2
+ }
+
+ .orange-button {
+   @apply rounded bg-yellow-500 p-2
+}
+
+ .genre-tag {
+    @apply rounded capitalize bg-blue-400 mr-2 p-2 text-white text-xs
+ }
+
+ .genre-tag-highlight {
+   @apply bg-blue-200
+}
+
+ .sidebar-widget {
+   @apply bg-blue-50 border-blue-200 border-2 m-1 p-2 rounded
+ }
+
+ .filter-text {
+   @apply capitalize cursor-pointer p-1 text-sm mt-1 mb-1 cursor-pointer
+ }
+
+ .filter-highlight {
+    @apply bg-blue-200 rounded
+ }

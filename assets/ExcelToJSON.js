@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const reader = require('xlsx');
 
-const jsonFileName = "./public/data/data.json";
+const jsonFileName = "./website/public/data/data.json";
 const file = reader.readFile("./assets/datasource/books.xlsx");
 
 let data = {

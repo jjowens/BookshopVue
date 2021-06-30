@@ -13,8 +13,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "exportjson": "node.exe .\\assets\\ExcelToJSON.js",
-    "tailwind-dev": "npx tailwindcss-cli@latest build -i ./assets/src/tailwind.css -c ./assets/config/tailwind.toggle.config.js -o ./public/css/default.css",
-    "tailwind-prod": "npx tailwindcss-cli@latest build ./assets/src/tailwind.css -c ./assets/config/tailwind.toggle.config.js -o ./public/css/default.css --purge=true"
+    "tailwind-dev": "npx tailwindcss-cli@latest build -i ./assets/src/tailwind.css -c ./assets/config/tailwind.toggle.config.js -o ./website/public/css/default.css",
+    "tailwind-prod": "npx tailwindcss-cli@latest build ./assets/src/tailwind.css -c ./assets/config/tailwind.toggle.config.js -o ./website/public/css/default.css --purge=true"
   },
   "repository": {
     "type": "git",
